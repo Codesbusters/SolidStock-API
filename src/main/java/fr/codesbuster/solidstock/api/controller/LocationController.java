@@ -48,7 +48,7 @@ public class LocationController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Iterable<LocationEntity>> getAllVAT() {
+    public ResponseEntity<Iterable<LocationEntity>> getAllLocation() {
         Iterable<LocationEntity> locationEntities = locationService.getLocations();
         return ResponseEntity.ok(locationEntities);
     }
