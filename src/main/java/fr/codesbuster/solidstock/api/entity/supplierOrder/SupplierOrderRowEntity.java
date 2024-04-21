@@ -1,5 +1,6 @@
 package fr.codesbuster.solidstock.api.entity.supplierOrder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.codesbuster.solidstock.api.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import lombok.Setter;
 public class SupplierOrderRowEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private double quantity;
     private double buyPrice;
@@ -28,5 +30,6 @@ public class SupplierOrderRowEntity {
 
     @ManyToOne
     @JoinColumn(name = "supplier_order_id")
+    @JsonIgnore
     private SupplierOrderEntity supplierOrder;
 }
