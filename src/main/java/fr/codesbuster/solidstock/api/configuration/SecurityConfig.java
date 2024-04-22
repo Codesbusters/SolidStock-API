@@ -368,6 +368,8 @@ public class SecurityConfig {
             product.setBarCode("123456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(150.0);
+            product.setSelled(20.0);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château Latour").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -383,6 +385,8 @@ public class SecurityConfig {
             product.setBarCode("253456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(200);
+            product.setSelled(25.0);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château Margaux").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -398,6 +402,8 @@ public class SecurityConfig {
             product.setBarCode("323456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(80);
+            product.setSelled(30);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château Lafite Rothschild").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -413,6 +419,8 @@ public class SecurityConfig {
             product.setBarCode("423456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1600.0);
+            product.setInStock(500);
+            product.setSelled(150);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château Mouton Rothschild").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -428,6 +436,8 @@ public class SecurityConfig {
             product.setBarCode("523456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(1000);
+            product.setSelled(200);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château d'Yquem").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -443,6 +453,8 @@ public class SecurityConfig {
             product.setBarCode("623456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(150.0);
+            product.setSelled(20.0);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château d'Yquem").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -458,6 +470,8 @@ public class SecurityConfig {
             product.setBarCode("723456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(20);
+            product.setSelled(350);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château d'Yquem").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -473,6 +487,8 @@ public class SecurityConfig {
             product.setBarCode("823456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(15);
+            product.setSelled(50);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château d'Yquem").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -488,6 +504,8 @@ public class SecurityConfig {
             product.setBarCode("923456789");
             product.setBuyPrice(1000.0);
             product.setSellPrice(1500.0);
+            product.setInStock(5);
+            product.setSelled(60);
             product.setMinimumStockQuantity(10);
             product.setSupplier(supplierRepository.findByCompanyName("Château d'Yquem").get());
             product.setVat(vatRepository.findByRate(20).get());
@@ -565,6 +583,8 @@ public class SecurityConfig {
 
         if (userRepository.findByEmail("admin.admin@admin.admin").isEmpty()) {
             UserEntity user = new UserEntity();
+            user.setLastName("DUPOND");
+            user.setFirstName("Pierre");
             user.setEmail("admin.admin@admin.admin");
             user.setPassword(passwordEncoder().encode("admin"));
             user.setRoles(roles);
@@ -573,12 +593,15 @@ public class SecurityConfig {
 
         if (userRepository.findByEmail("user@user.user").isEmpty()) {
             UserEntity user = new UserEntity();
+            user.setLastName("MICHEL");
+            user.setFirstName("Pascal");
             user.setEmail("user@user.user");
             user.setPassword(passwordEncoder().encode("test"));
             List<RoleEntity> roles = new ArrayList<>();
             roles.add(roleRepository.findByName("USER").orElse(null));
             user.setRoles(roles);
             user.setCustomer(customerRepository.findByCompanyName("CGT de Lyon").get());
+            user.setDefaultPage("Produits");
 
             userRepository.save(user);
         }

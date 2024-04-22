@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setFirstName(registerDto.getFirstName());
         userEntity.setEmail(registerDto.getEmail());
         userEntity.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        userEntity.setLanguage(registerDto.getLanguage());
         CustomerEntity customerEntity = customerRepository.findById(registerDto.getCustomerId()).orElse(null);
         userEntity.setCustomer(customerEntity);
 
@@ -92,6 +93,8 @@ public class UserServiceImpl implements UserService {
         userEntity.setEmail(registerDto.getEmail() != null ? registerDto.getEmail() : userEntity.getEmail());
         userEntity.setPassword(registerDto.getPassword() != null ? passwordEncoder.encode(registerDto.getPassword()) : userEntity.getPassword());
         userEntity.setCustomer(registerDto.getCustomerId() != 0 ? customerRepository.findById(registerDto.getCustomerId()).orElse(null) : userEntity.getCustomer());
+        userEntity.setDefaultPage(registerDto.getDefaultPage() != null ? registerDto.getDefaultPage() : userEntity.getDefaultPage());
+        userEntity.setLanguage(registerDto.getLanguage() != null ? registerDto.getLanguage() : userEntity.getLanguage());
 
         userRepository.save(userEntity);
         return ResponseEntity.ok(userEntity);

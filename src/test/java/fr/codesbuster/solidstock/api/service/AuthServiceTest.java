@@ -71,7 +71,7 @@ public class AuthServiceTest {
     //@Test
     void register_ValidUser_RegistersUser() {
         // Arrange
-        RegisterDto registerDto = new RegisterDto("testLastName", "testFirstName", "testEmail", "testPassword", 1);
+        RegisterDto registerDto = new RegisterDto("testLastName", "testFirstName", "testEmail", "testPassword", 1, null, null);
 
         // Simuler le comportement de passwordEncoder
         Mockito.when(passwordEncoder.encode(registerDto.getPassword())).thenReturn("encodedPassword");
@@ -104,7 +104,7 @@ public class AuthServiceTest {
     //@Test
     void register_ExistingUsername_ThrowsAPIException() {
         // Arrange
-        RegisterDto registerDto = new RegisterDto("testName", "testFirstName", "testEmail", "testPassword", 1);
+        RegisterDto registerDto = new RegisterDto("testName", "testFirstName", "testEmail", "testPassword", 1, null, null);
         Mockito.when(userRepository.existsByEmail(registerDto.getEmail())).thenReturn(true);
 
         // Act and Assert
@@ -114,7 +114,7 @@ public class AuthServiceTest {
     // @Test
     void register_ExistingEmail_ThrowsAPIException() {
         // Arrange
-        RegisterDto registerDto = new RegisterDto("testName", "testFirstName", "testEmail", "testPassword", 1);
+        RegisterDto registerDto = new RegisterDto("testName", "testFirstName", "testEmail", "testPassword", 1, null, null);
         Mockito.when(userRepository.existsByEmail(registerDto.getEmail())).thenReturn(true);
 
         // Act and Assert
