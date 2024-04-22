@@ -32,4 +32,7 @@ public class SupplierOrderRowEntity {
     @JoinColumn(name = "supplier_order_id")
     @JsonIgnore
     private SupplierOrderEntity supplierOrder;
+
+    @Transient
+    private double total = quantity * buyPrice;
 }
