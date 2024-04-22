@@ -1,7 +1,5 @@
 package fr.codesbuster.solidstock.api.service.impl;
 
-import fr.codesbuster.solidstock.api.entity.CustomerEntity;
-import fr.codesbuster.solidstock.api.entity.invoice.InvoiceRowEntity;
 import fr.codesbuster.solidstock.api.entity.supplierOrder.SupplierOrderEntity;
 import fr.codesbuster.solidstock.api.entity.supplierOrder.SupplierOrderRowEntity;
 import fr.codesbuster.solidstock.api.entity.supplierOrder.SupplierOrderStatus;
