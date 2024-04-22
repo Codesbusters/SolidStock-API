@@ -33,6 +33,8 @@ public class ProductEntity {
     private double buyPrice;
     private double sellPrice;
     private int minimumStockQuantity;
+    private double inStock;
+    private double selled;
     @JsonIgnore
     private byte[] image;
 

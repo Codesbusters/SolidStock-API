@@ -12,7 +12,7 @@
     <artifactId>api</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
-    <name>SoldStock API</name>
+    <name>SolidStock API</name>
     <description>API pour l'application SolidStock Web et Client</description>
     <properties>
         <java.version>21</java.version>
