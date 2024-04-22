@@ -15,4 +15,6 @@ public class RegisterDto {
     private String email;
     private String password;
     private long customerId;
+    private String defaultPage;
+    private String language;
 }

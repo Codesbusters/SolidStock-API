@@ -565,6 +565,8 @@ public class SecurityConfig {
 
         if (userRepository.findByEmail("admin.admin@admin.admin").isEmpty()) {
             UserEntity user = new UserEntity();
+            user.setLastName("DUPOND");
+            user.setFirstName("Pierre");
             user.setEmail("admin.admin@admin.admin");
             user.setPassword(passwordEncoder().encode("admin"));
             user.setRoles(roles);
@@ -573,12 +575,15 @@ public class SecurityConfig {
 
         if (userRepository.findByEmail("user@user.user").isEmpty()) {
             UserEntity user = new UserEntity();
+            user.setLastName("MICHEL");
+            user.setFirstName("Pascal");
             user.setEmail("user@user.user");
             user.setPassword(passwordEncoder().encode("test"));
             List<RoleEntity> roles = new ArrayList<>();
             roles.add(roleRepository.findByName("USER").orElse(null));
             user.setRoles(roles);
             user.setCustomer(customerRepository.findByCompanyName("CGT de Lyon").get());
+            user.setDefaultPage("Produits");
 
             userRepository.save(user);
         }
