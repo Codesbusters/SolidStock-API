@@ -104,6 +104,7 @@ public class SupplierOrderServiceImpl implements SupplierOrderService {
 
     @Override
     public void deleteRow(long id) {
+        log.info("Deleting row with id: " + id);
         supplierOrderRowRepository.deleteById(id);
     }
 

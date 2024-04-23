@@ -1,15 +1,14 @@
 package fr.codesbuster.solidstock.api.service.impl;
 
 import fr.codesbuster.solidstock.api.entity.CustomerEntity;
+import fr.codesbuster.solidstock.api.entity.StockMovementEntity;
+import fr.codesbuster.solidstock.api.entity.StockMovementType;
 import fr.codesbuster.solidstock.api.entity.invoice.InvoiceEntity;
 import fr.codesbuster.solidstock.api.entity.invoice.InvoiceRowEntity;
 import fr.codesbuster.solidstock.api.exception.APIException;
 import fr.codesbuster.solidstock.api.payload.dto.InvoiceDto;
 import fr.codesbuster.solidstock.api.payload.dto.InvoiceRowDto;
-import fr.codesbuster.solidstock.api.repository.CustomerRepository;
-import fr.codesbuster.solidstock.api.repository.InvoiceRepository;
-import fr.codesbuster.solidstock.api.repository.InvoiceRowRepository;
-import fr.codesbuster.solidstock.api.repository.ProductRepository;
+import fr.codesbuster.solidstock.api.repository.*;
 import fr.codesbuster.solidstock.api.service.InvoicePDFService;
 import fr.codesbuster.solidstock.api.service.InvoiceService;
 import fr.codesbuster.solidstock.api.service.OwnerCompanyService;
@@ -38,6 +37,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     private CustomerRepository customerRepository;
     @Autowired
     private OwnerCompanyService ownerCompanyService;
+    @Autowired
+    private StockMovementRepository stockMovementRepository;
 
     @Override
     public InvoiceEntity createInvoice(InvoiceDto invoiceDto) {
@@ -123,6 +124,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     public File generatePDF(long id) throws IOException, ParseException {
         InvoiceEntity invoiceEntity = invoiceRepository.findById(id).orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Invoice not found"));
         invoiceEntity.setOwnerCompany(ownerCompanyService.getOwnerCompany());
+
+        for (InvoiceRowEntity invoiceRowEntity : invoiceEntity.getInvoiceRows()) {
+            StockMovementEntity stockMovementEntity = new StockMovementEntity();
+            stockMovementEntity.setProduct(invoiceRowEntity.getProduct());
+            stockMovementEntity.setQuantity(invoiceRowEntity.getQuantity());
+            stockMovementEntity.setType(StockMovementType.OUT_SALE);
+            stockMovementEntity.setBatchNumber("0");
+
+            stockMovementRepository.save(stockMovementEntity);
+        }
+
+
         return invoicePDFService.generateInvoicePDF(invoiceEntity);
     }
 }

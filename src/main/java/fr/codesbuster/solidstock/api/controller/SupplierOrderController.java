@@ -1,9 +1,15 @@
 package fr.codesbuster.solidstock.api.controller;
 
+import fr.codesbuster.solidstock.api.entity.StockMovementEntity;
+import fr.codesbuster.solidstock.api.entity.StockMovementType;
 import fr.codesbuster.solidstock.api.entity.supplierOrder.SupplierOrderEntity;
 import fr.codesbuster.solidstock.api.entity.supplierOrder.SupplierOrderRowEntity;
+import fr.codesbuster.solidstock.api.entity.supplierOrder.SupplierOrderStatus;
 import fr.codesbuster.solidstock.api.payload.dto.SupplierOrderDto;
 import fr.codesbuster.solidstock.api.payload.dto.SupplierOrderRowDto;
+import fr.codesbuster.solidstock.api.repository.StockMovementRepository;
+import fr.codesbuster.solidstock.api.repository.SupplierOrderRepository;
+import fr.codesbuster.solidstock.api.repository.SupplierOrderRowRepository;
 import fr.codesbuster.solidstock.api.service.SupplierOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +26,12 @@ public class SupplierOrderController {
 
     @Autowired
     private SupplierOrderService supplierOrderService;
+    @Autowired
+    private SupplierOrderRepository supplierOrderRepository;
+    @Autowired
+    private SupplierOrderRowRepository supplierOrderRowRepository;
+    @Autowired
+    private StockMovementRepository stockMovementRepository;
 
     @PostMapping("/add")
     public void createSupplierOrder(@RequestBody SupplierOrderDto supplierOrderDto) throws ParseException {
@@ -38,7 +50,7 @@ public class SupplierOrderController {
         List<SupplierOrderEntity> supplierOrders = supplierOrderService.getAllSupplierOrders();
         supplierOrders.forEach(SupplierOrderEntity::calculateTotal);
         Collections.reverse(supplierOrders);
-       return supplierOrders;
+        return supplierOrders;
     }
 
     @DeleteMapping("/{id}")
@@ -74,6 +86,26 @@ public class SupplierOrderController {
     @PutMapping("/{id}/row/{rowId}")
     public void updateRow(@PathVariable long id, @PathVariable long rowId, @RequestBody SupplierOrderRowDto supplierOrderRowDto) {
         supplierOrderService.updateRow(rowId, supplierOrderRowDto);
+    }
+
+    @PutMapping("/{id}/validate")
+    public void validateSupplierOrder(@PathVariable long id) {
+        SupplierOrderEntity supplierOrderEntity = supplierOrderService.getSupplierOrder(id);
+        supplierOrderEntity.setStatus(SupplierOrderStatus.VALIDATED);
+
+        supplierOrderRepository.save(supplierOrderEntity);
+
+        for (SupplierOrderRowEntity supplierOrderRowEntity : supplierOrderEntity.getSupplierOrderRows()) {
+            StockMovementEntity stockMovementEntity = new StockMovementEntity();
+            stockMovementEntity.setProduct(supplierOrderRowEntity.getProduct());
+            stockMovementEntity.setQuantity(supplierOrderRowEntity.getQuantity());
+            stockMovementEntity.setType(StockMovementType.OUT_SALE);
+            stockMovementEntity.setBatchNumber("0");
+
+            stockMovementRepository.save(stockMovementEntity);
+        }
+
+
     }
 
 }
